@@ -112,7 +112,7 @@ export function MainPage(props: IMainPageProps) {
 
             const filteredArr = widgets[newColumnIndex].filter(w => w.id !== id);
             filteredArr.splice(newRowIndex, 0, widgetForChanges);
-            console.log("filteredArr", filteredArr);
+
             setWidgets({
                 ...widgets,
                 [newColumnIndex]: filteredArr

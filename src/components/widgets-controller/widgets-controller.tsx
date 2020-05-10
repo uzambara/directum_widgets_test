@@ -46,7 +46,7 @@ function WidgetsControllerComponent(props: IWidgetsControllerProps) {
         }
         let validationResult: ValidationResult = widgetUtils.validateWidget(widget);
 
-        console.log(validationResult);
+
         if(!validationResult?.isValid) {
             setValidateError(true);
         } else {

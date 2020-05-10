@@ -33,26 +33,20 @@ function WidgetsTableComponent(props: IWidgetsTableProps) {
     const onDragStop: WithDraggableOnDragStop =
             (e, data, currentColumnIndex, currentRowIndex, id) => {
         const {lastX, node} = data;
+
         const newColumnIdx = widgetUtils.getNewColumnIndexAfterDragStop({
             columnWidth: columnSize.width,
             columnsCount,
             currentColumnIndex: currentColumnIndex,
             lastX: lastX});
-        const {current} = columnRefsArray.current[newColumnIdx];
-        let newRowIndex = 0;
-        const changedWidgetTop = node.getBoundingClientRect().top;
-        const isTheSameColumn = currentColumnIndex == newColumnIdx;
-        for(; newRowIndex < current.children.length; newRowIndex++) {
-            if(newRowIndex == currentRowIndex && isTheSameColumn)
-                continue;
-            const currentWidgetRect = current.children[newRowIndex].getBoundingClientRect();
-            if (changedWidgetTop < currentWidgetRect.top) {
-                if(newRowIndex - 1 == currentRowIndex && isTheSameColumn) {
-                    newRowIndex--;
-                }
-                break;
-            }
-        }
+
+        let newRowIndex = widgetUtils.getNewRowIndexAfterDragStop({
+            changedWidgetTop: node.getBoundingClientRect().top,
+            currentColumnIndex: currentColumnIndex,
+            newColumnIdx: newColumnIdx,
+            currentColumnElementRef: columnRefsArray.current[newColumnIdx],
+            currentRowIndex: currentRowIndex
+        });
 
         changeWidgetColumn(id, currentColumnIndex, newColumnIdx, currentRowIndex, newRowIndex);
     };
@@ -63,16 +57,9 @@ function WidgetsTableComponent(props: IWidgetsTableProps) {
             {
                 _.range(columnsCount).map(_columnIndex => {
                     let widgetsByColumn = widgets && widgets[_columnIndex];
-                    if(_columnIndex == 2) {
-                        console.log("widgetsByColumn", widgetsByColumn);
-                    }
                     return <div className={styles.widgetsTableColumn} key={_columnIndex} ref={columnRefsArray.current[_columnIndex]}>
                         {
-                            widgetsByColumn?.map((widget, rowIndex) => {
-
-                                if(!widget.id)
-                                    debugger;
-                                return widget?.type == WidgetType.CurrencyRate
+                            widgetsByColumn?.map((widget, rowIndex) => widget?.type == WidgetType.CurrencyRate
                                 ? <DraggableCurrencyRateWidget
                                     widget={widget as ICurrencyRateWidget}
                                     key={widget.id}
@@ -86,7 +73,7 @@ function WidgetsTableComponent(props: IWidgetsTableProps) {
                                     key={widget.id}
                                     weatherService={weatherService}
                                     deleteWidget={deleteWidget}
-                                />})
+                                />)
                         }
                 </div>})
             }

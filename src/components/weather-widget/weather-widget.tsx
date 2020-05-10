@@ -34,7 +34,7 @@ function WeatherWidgetComponent(props: IWeatherWidgetProps) {
                 });
         }
     }, []);
-    console.log("render weather widget");
+
     return <article className={cn(styles.weatherWidget)} id="handle">
         <WidgetContextMenu
             onClose={closeContextMenu}

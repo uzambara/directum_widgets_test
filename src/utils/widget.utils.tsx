@@ -3,6 +3,7 @@ import {ICurrencyRateWidget, IWeatherWidget, IWidget} from "../models";
 import {WidgetType} from "../enums";
 import {ValidationResult, Validator} from "lakmus";
 import {CurrencyRateWidgetValidator, WeatherWidgetValidator} from "../validators";
+import {MutableRefObject} from "react";
 
 function createCurrencyRateWidget({
         currency1,
@@ -17,16 +18,50 @@ function createCurrencyRateWidget({
     }
 }
 
+type GetNewRowIndexAfterDragStopParams = {
+    currentColumnElementRef: MutableRefObject<HTMLDivElement>,
+    currentRowIndex: number,
+    currentColumnIndex: number,
+    newColumnIdx: number,
+    changedWidgetTop: number
+}
+
+function getNewRowIndexAfterDragStop({
+        currentColumnElementRef,
+        currentRowIndex,
+        currentColumnIndex,
+        newColumnIdx,
+        changedWidgetTop}: GetNewRowIndexAfterDragStopParams): number {
+    const {current} = currentColumnElementRef;
+    let newRowIndex = 0;
+    const isTheSameColumn = currentColumnIndex == newColumnIdx;
+    for(; newRowIndex < current.children.length; newRowIndex++) {
+        if(newRowIndex == currentRowIndex && isTheSameColumn)
+            continue;
+        const currentWidgetRect = current.children[newRowIndex].getBoundingClientRect();
+        if (changedWidgetTop < currentWidgetRect.top) {
+            if(newRowIndex - 1 == currentRowIndex && isTheSameColumn) {
+                newRowIndex--;
+            }
+            break;
+        }
+    }
+    return newRowIndex;
+}
+
+type GetNewColumnIndexAfterDragStopParams = {
+    columnWidth: number,
+    columnsCount: number,
+    currentColumnIndex: number,
+    lastX: number
+
+}
+
 function getNewColumnIndexAfterDragStop({
         columnWidth,
         columnsCount,
         currentColumnIndex,
-        lastX}: {
-            columnWidth: number,
-            columnsCount: number,
-            currentColumnIndex: number,
-            lastX: number
-        }): number {
+        lastX}: GetNewColumnIndexAfterDragStopParams): number {
     const halfWidthOfColumn = columnWidth / 2;
     const x = Math.abs(lastX);
     const halfWidthOfColumnCountOffset = Math.floor(x / halfWidthOfColumn);
@@ -74,5 +109,6 @@ export const widgetUtils = {
     createCurrencyRateWidget,
     validateWidget,
     getDefaultCurrencyRateWidget,
-    getNewColumnIndexAfterDragStop
+    getNewColumnIndexAfterDragStop,
+    getNewRowIndexAfterDragStop
 };
