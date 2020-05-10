@@ -1,0 +1,52 @@
+.currency-rate-widget {
+    max-width: 200px;
+    min-height: 120px;
+    border: 1px solid $_bordersColor;
+    box-shadow: $_boxShadow;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: white;
+    padding: 30px 5px;
+}
+
+.currency-image {
+    width: 22px;
+    height: 13px;
+    margin-right: 5px;
+    transition: opacity 1s linear 0.2s;
+}
+
+.currency-rate-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.currency-wrapper {
+    margin-bottom: 10px;
+}
+
+.currency-name,
+.rate-value {
+    font-family: $_fontFamily;
+    font-size: 10px;
+}
+
+.rate-images-wrapper {
+    position: relative;
+}
+
+.rate-change-image {
+    margin-right: 5px;
+    width: 22px;
+    height: 22px;
+}
+
+.rate-change-image-bottom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: white;
+    transition: opacity 2s ease-in-out;
+}
+

@@ -1,0 +1,1 @@
+﻿export type YandexCloudness = 0 | 0.25 | 0.75 | 1;

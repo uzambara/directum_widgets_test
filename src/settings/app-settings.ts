@@ -1,0 +1,1 @@
+﻿export const COUNT_OF_WIDGET_COLUMNS = 3;

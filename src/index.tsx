@@ -1,0 +1,8 @@
+import "./main.scss";
+import * as ReactDOM from "react-dom";
+import { App } from "./app";
+import React from "react";
+
+
+
+ReactDOM.render(<App/>, document.getElementById("app"));

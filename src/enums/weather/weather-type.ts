@@ -1,0 +1,20 @@
+﻿﻿export enum WeatherType {
+    Clear = 1,
+    PartlyCloudy = 2 ,
+    Cloudy = 3,
+    Overcast = 4,
+    PartlyCloudyAndLightRain = 5,
+    PartlyCloudyAndRain  = 6,
+    OvercastAndRain  = 7,
+    OvercastThunderstormsWithRain = 8,
+    CloudyAndLightRain = 9,
+    OvercastAndLightRain = 10,
+    CloudyAndRain = 11,
+    OvercastAndWetSnow = 12,
+    PartlyCloudyAndLightSnow = 13,
+    PartlyCloudyAndSnow = 14,
+    OvercastAndSnow = 15,
+    CloudyAndLightSnow = 16,
+    OvercastAndLightSnow = 17,
+    CloudyAndSnow = 18
+}

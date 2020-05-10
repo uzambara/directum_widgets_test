@@ -1,0 +1,1 @@
+﻿export type YandexWindDirection = "nw" | "n" | "ne" | "e" | "se" | "s" | "sw" | "w" | "c";

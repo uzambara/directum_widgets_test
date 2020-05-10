@@ -1,0 +1,1 @@
+﻿export type YandexSeason = "summer" | "autumn" | "winter" | "spring";

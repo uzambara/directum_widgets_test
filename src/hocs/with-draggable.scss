@@ -1,0 +1,23 @@
+﻿.draggable-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.draggable {
+    z-index: 0;
+}
+
+.draggable--moving {
+    z-index: 100;
+}
+
+.draggable--stopped {
+    transform: none !important;
+}
+
+.draggable-line {
+    cursor: move;
+    height: 15px;
+    background-color: beige;
+    box-shadow: $_boxShadow;
+}

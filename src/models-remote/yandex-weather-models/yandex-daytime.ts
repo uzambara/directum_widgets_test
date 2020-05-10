@@ -1,0 +1,1 @@
+﻿export type YandexDayTime = "d" | "n";

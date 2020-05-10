@@ -1,0 +1,34 @@
+﻿.widgets-table {
+    margin: 0 auto;
+}
+
+.widgets-table-row {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid $_bordersColor;
+}
+
+.widgets-table-column {
+    display: flex;
+    flex: 1 1 200px;
+    border: 1px solid $_bordersColor;
+    padding: 5px 10px 160px;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.widgets-table-column > * {
+    margin-bottom: 15px;
+}
+
+@media screen and (min-width: 750px) {
+    .widgets-table {
+        max-width: 750px;
+    }
+}
+
+@media screen and (min-width: 1250px) {
+    .widgets-table {
+        max-width: 1250px;
+    }
+}

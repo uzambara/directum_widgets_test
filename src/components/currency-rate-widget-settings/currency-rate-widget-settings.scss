@@ -1,0 +1,10 @@
+﻿.currency-rate-widget-settings {
+    display: flex;
+    justify-content: space-between;
+
+    .currency-input {
+        flex-grow: 1;
+        margin-right: 20px;
+    }
+}
+

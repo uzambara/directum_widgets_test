@@ -1,0 +1,32 @@
+﻿.widgets-controller {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 800px;
+    margin: 0 auto;
+
+    .widgets-controller-input {
+        margin-bottom: 40px;
+        margin-right: 20px;
+        flex: 1 1 180px;
+    }
+
+    .widgets-controller-settings {
+        margin-right: 0;
+        flex-wrap: wrap;
+    }
+
+    .widgets-controller-submit-button {
+        max-width: 150px;
+        margin-right: 30px;
+        height: 50px;
+    }
+
+    .buttons-wrapper {
+        justify-content: flex-start;
+        align-items: center;
+        flex: 0 1 100%;
+        display: flex;
+        min-height: 60px;
+    }
+}
+

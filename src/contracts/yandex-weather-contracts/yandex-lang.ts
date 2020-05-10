@@ -1,0 +1,1 @@
+﻿export type YandexWeatherLang = "ru_RU" | "ru_UA" | "uk_UA" | "be_BY" | "kk_KZ" | "tr_TR" | "en_US";
