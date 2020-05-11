@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+const autoprefixer = require('autoprefixer');
 
 let isDev = true;
 let isProd = !isDev;
@@ -30,7 +31,7 @@ const optimization = () => {
 
 const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
 
-const cssLoaders = extra => {
+const cssLoaders = (...extra) => {
     const loaders = [
         { loader: "style-loader" },
         {
@@ -46,20 +47,30 @@ const cssLoaders = extra => {
     ];
 
     if (extra) {
-        loaders.push(extra)
+        loaders.push(...extra)
     }
 
     return loaders
 };
 
 const sassLoaders = () => {
-    const loaders = cssLoaders({
+    var extra = [];
+    if(isProd) {
+        extra.push({
+            loader: 'postcss-loader',
+            options: {
+                plugins: [autoprefixer]
+            }
+        });
+    }
+    extra.push({
         loader: 'sass-loader',
         options: {
             data: '@import "./src/constants.scss";',
             includePaths:[__dirname, 'src']
         }
     });
+    const loaders = cssLoaders(...extra);
 
     return loaders;
 };
@@ -123,7 +134,7 @@ module.exports = function(env, args) {
     isDev = args.mode === "development";
     isProd = !isDev;
 
-    return {
+    var res = {
         context: path.resolve(__dirname, 'src'),
         entry: ["@babel/polyfill", "./index.tsx"],
         output: {
@@ -173,5 +184,7 @@ module.exports = function(env, args) {
             contentBase: path.resolve(__dirname, "build"),
             historyApiFallback: true
         }
-    }
+    };
+    console.log(res.module.rules[3]);
+    return res;
 };
