@@ -13,19 +13,6 @@ function initWidgetsByColumnMap(columnsCount: number) {
     return result;
 }
 
-function createCurrencyRateWidget({
-        currency1,
-        currency2,
-        columnIndex}: Partial<ICurrencyRateWidget>): ICurrencyRateWidget {
-    return {
-        id: "",
-        columnIndex,
-        currency1,
-        currency2,
-        type: WidgetType.CurrencyRate
-    }
-}
-
 type GetNewRowIndexAfterDragStopParams = {
     currentColumnElementRef: MutableRefObject<HTMLDivElement>,
     currentRowIndex: number,
@@ -85,16 +72,6 @@ function getNewColumnIndexAfterDragStop({
         newColumnIdx = currentColumnIndex;
     }
     return newColumnIdx;
-}
-
-function getDefaultCurrencyRateWidget(): ICurrencyRateWidget {
-    return {
-        id: "",
-        columnIndex: 0,
-        currency1: undefined,
-        currency2: undefined,
-        type: undefined
-    }
 }
 
 function deleteWidget(widget: IWidget, widgetsByColumn: {[columnIdx: number]: IWidget[]}): {[columnIdx: number]: IWidget[]} {
@@ -186,9 +163,7 @@ function validateWidget(widget: IWidget): ValidationResult {
 }
 
 export const widgetUtils = {
-    createCurrencyRateWidget,
     validateWidget,
-    getDefaultCurrencyRateWidget,
     getNewColumnIndexAfterDragStop,
     getNewRowIndexAfterDragStop,
     deleteWidget,

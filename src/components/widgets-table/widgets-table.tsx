@@ -6,7 +6,7 @@ import {CurrencyRateWidget, ICurrencyRateWidgetProps} from "../currency-rate-wid
 import {ICurrencyRateWidget, IWeatherWidget, IWidget} from "../../models";
 import {WidgetType} from "../../enums";
 import _ from "underscore";
-import {YandexWeatherService} from "../../services";
+import {FakeCurrencyService, YandexWeatherService} from "../../services";
 import {useComponentSize} from "../../hooks/useComponentSize";
 import {widgetUtils} from "../../utils";
 
@@ -24,6 +24,7 @@ const DraggableCurrencyRateWidget = withDraggable<ICurrencyRateWidgetProps>(Curr
 function WidgetsTableComponent(props: IWidgetsTableProps) {
     const {columnsCount, widgets, onDeleteWidget, onWidgetPositionChange, onEditWidget} = props;
     const weatherService = new YandexWeatherService();
+    const currencyRateService = new FakeCurrencyService();
     const columnRefsArray = useRef<{[key: string]: MutableRefObject<HTMLDivElement>}>({});
 
     _.range(columnsCount).forEach(i => {
@@ -62,6 +63,11 @@ function WidgetsTableComponent(props: IWidgetsTableProps) {
                         {
                             widgetsByColumn?.map((widget, rowIndex) => widget?.type == WidgetType.CurrencyRate
                                 ? <DraggableCurrencyRateWidget
+                                    columnIndex={_columnIndex}
+                                    rowIndex={rowIndex}
+                                    id={widget.id}
+                                    onDragStop={onDragStop}
+                                    currencyRateService={currencyRateService}
                                     widget={widget as ICurrencyRateWidget}
                                     key={widget.id}
                                 />

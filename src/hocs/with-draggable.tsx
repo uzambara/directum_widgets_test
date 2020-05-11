@@ -24,10 +24,12 @@ export function withDraggable<T extends object>(WrappedComponent: React.Function
 
         return <Draggable
             handle={`#${handleId}`}
-            position={position}
+            position={onDragStop && position}
             onStop={(ev: DraggableEvent, data: DraggableData) => {
-                onDragStop(ev, data, columnIndex, rowIndex, id);
-                setPosition({x: 0, y: 0});
+                if(onDragStop) {
+                    onDragStop(ev, data, columnIndex, rowIndex, id);
+                    setPosition({x: 0, y: 0});
+                }
             }}
             defaultClassName={styles.draggable}
             defaultClassNameDragging={styles.draggableMoving}

@@ -1,11 +1,10 @@
 .currency-rate-widget {
-    max-width: 200px;
     min-height: 120px;
     border: 1px solid $_bordersColor;
     box-shadow: $_boxShadow;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: white;
     padding: 30px 5px;
 }

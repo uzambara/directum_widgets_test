@@ -2,6 +2,7 @@
 import {entityUtils} from "./entity.utils";
 import {unitUtils} from "./unit.utils";
 import {fetchUtil} from "./fetch.utils";
+import {currencyUtils} from "./currency.utils";
 import {guid} from "./guid.utils";
 
 export {
@@ -9,5 +10,6 @@ export {
     entityUtils,
     unitUtils,
     fetchUtil,
+    currencyUtils,
     guid
 }

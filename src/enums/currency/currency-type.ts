@@ -1,6 +1,6 @@
 ﻿export enum CurrencyType {
-    EUR = 1,
-    USD = 2,
-    GBP = 3,
-    UAH = 4
+    EUR = "EUR",
+    USD = "USD",
+    GBP = "GBP",
+    UAH = "UAH"
 }

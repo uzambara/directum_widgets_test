@@ -1,7 +1,7 @@
-﻿import {IWidget} from "../index";
+﻿import {ICurrency, IWidget} from "../index";
 import {CurrencyType} from "../../enums";
 
 export interface ICurrencyRateWidget extends IWidget {
-    currency1: CurrencyType,
-    currency2: CurrencyType
+    currencyType1: CurrencyType,
+    currencyType2: CurrencyType
 }

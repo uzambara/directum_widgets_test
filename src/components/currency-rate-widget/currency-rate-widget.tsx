@@ -5,19 +5,21 @@ import downRateImage from "./images/icons8-down-50.png";
 import upRateImage from "./images/icons8-up-50.png";
 
 import {ICurrencyRateWidget, ICurrencyRateWidgetData} from "../../models";
+import {ICurrencyRateService} from "../../services";
 
 export interface ICurrencyRateWidgetProps {
-    widget: ICurrencyRateWidget
+    widget: ICurrencyRateWidget,
+    currencyRateService: ICurrencyRateService
 }
 
 function CurrencyRateWidgetComponent(props: ICurrencyRateWidgetProps) {
-    const {widget} = props;
+    const {widget, currencyRateService} = props;
     const [currencyRateData, setCurrencyRateData] = useState<ICurrencyRateWidgetData>(null);
-    // useEffect(() => {
-    //     CurrencyService
-    //         .getCurrencyRate(widget)
-    //         .then(setCurrencyRateData)
-    // }, []);
+    useEffect(() => {
+        currencyRateService
+            .getCurrencyRate(widget)
+            .then(setCurrencyRateData)
+    }, []);
     const [downRate1Opacity, setDownRate1Opacity] = useState<CSSProperties>({});
     const [downRate2Opacity, setDownRate2Opacity] = useState<CSSProperties>({});
     const setCurrencyRateUp = (currencyRateNumber: 1 | 2) => {
@@ -50,8 +52,8 @@ function CurrencyRateWidgetComponent(props: ICurrencyRateWidgetProps) {
             <>
                 <div>
                     <div className={styles.currencyWrapper}>
-                        <img className={styles.currencyImage} src={currencyRateData.currencyType1.imageUrl} alt="EUR" width={22} height={13}/>
-                        <span className={styles.currencyName} dangerouslySetInnerHTML={{__html: currencyRateData.currencyType1.displayName}}/>
+                        <img className={styles.currencyImage} src={currencyRateData.currency1.imageUrl} alt="EUR" width={22} height={13}/>
+                        <span className={styles.currencyName} dangerouslySetInnerHTML={{__html: currencyRateData.currency1.displayName}}/>
                     </div>
                     <div className={styles.currencyRateWrapper}>
                         <div className={styles.rateImagesWrapper}>
@@ -63,8 +65,8 @@ function CurrencyRateWidgetComponent(props: ICurrencyRateWidgetProps) {
                 </div>
                 <div>
                     <div className={styles.currencyWrapper}>
-                        <img className={styles.currencyImage} src={currencyRateData.currencyType2.imageUrl} alt="EUR" width={22} height={13}/>
-                        <span className={styles.currencyName} dangerouslySetInnerHTML={{__html: currencyRateData.currencyType2.displayName}}/>
+                        <img className={styles.currencyImage} src={currencyRateData.currency2.imageUrl} alt="EUR" width={22} height={13}/>
+                        <span className={styles.currencyName} dangerouslySetInnerHTML={{__html: currencyRateData.currency2.displayName}}/>
                     </div>
                     <div className={styles.currencyRateWrapper}>
                         <div className={styles.rateImagesWrapper}>

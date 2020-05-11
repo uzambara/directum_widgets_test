@@ -10,7 +10,7 @@ import _ from "underscore";
 import cn from "classnames";
 import {Alert} from "@material-ui/lab";
 import {ValidationResult} from "lakmus/src/results/validation-result";
-import {WeatherWidgetFactory} from "../../factories";
+import {CurrencyWidgetFactory, WeatherWidgetFactory} from "../../factories";
 
 
 export interface IWidgetsControllerProps {
@@ -36,17 +36,15 @@ function WidgetsControllerComponent(props: IWidgetsControllerProps) {
     const {value: temperatureUnit, onChange: onTemperatureUnitChange} = useSelectInput<TemperatureUnitType>(weatherWidget?.temperatureUnit || TemperatureUnitType.Celsius);
 
     const currencyRateWidget = initialWidget as ICurrencyRateWidget;
-    const {value: currency1, onChange: onCurrency1Change} = useSelectInput<CurrencyType>(currencyRateWidget?.currency1 || CurrencyType.USD);
-    const {value: currency2, onChange: onCurrency2Change} = useSelectInput<CurrencyType>(currencyRateWidget?.currency2 || CurrencyType.USD);
-
-
+    const {value: currency1, onChange: onCurrency1Change} = useSelectInput<CurrencyType>(currencyRateWidget?.currencyType1 || CurrencyType.USD);
+    const {value: currency2, onChange: onCurrency2Change} = useSelectInput<CurrencyType>(currencyRateWidget?.currencyType2 || CurrencyType.USD);
 
     const addWidget = () => {
         let widget: IWidget = null;
 
         switch (widgetType) {
             case WidgetType.CurrencyRate:
-                widget = widgetUtils.createCurrencyRateWidget({currency1, currency2, columnIndex});
+                widget = CurrencyWidgetFactory.createCurrencyRateWidget({currencyType1: currency1, currencyType2: currency2, columnIndex});
                 break;
             case WidgetType.Weather:
                 const city = cities.find(c => c.id == cityId);

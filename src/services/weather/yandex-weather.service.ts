@@ -1,6 +1,6 @@
 ﻿import {IWeatherWidget, IWeatherWidgetData} from "../../models";
 import {fetchUtil} from "../../utils";
-import {YandexWeatherWidgetDataFactory} from "../../factories";
+import {IWeatherWidgetDataFactory, YandexWeatherWidgetDataFactory} from "../../factories";
 import {IYandexWeatherResponse} from "../../models-remote/yandex-weather-models";
 import {IWeatherService} from "./weather-service-base";
 import moment from "moment";
@@ -17,12 +17,17 @@ export class YandexWeatherService implements IWeatherService {
         let nowDate = moment().format("DD.MM.YYYY");
         return `${widget.city.id}_${nowDate}`;
     }
+    readonly widgetDataFactory: IWeatherWidgetDataFactory<IYandexWeatherResponse>;
+
+    constructor() {
+        this.widgetDataFactory = new YandexWeatherWidgetDataFactory();
+    }
 
     public async getWeather(widget: IWeatherWidget): Promise<IWeatherWidgetData> {
         const cacheKey = YandexWeatherService.GetCacheKey(widget);
         const cachedResponse = YandexWeatherService.Cache[cacheKey];
         if(cachedResponse) {
-            return YandexWeatherWidgetDataFactory.createWeatherWidgetData(cachedResponse, widget);
+            return this.widgetDataFactory.createWeatherWidgetData(cachedResponse, widget);
         }
 
         const searchParams = {
@@ -34,6 +39,8 @@ export class YandexWeatherService implements IWeatherService {
             searchParams);
 
         YandexWeatherService.Cache[cacheKey] = response;
-        return YandexWeatherWidgetDataFactory.createWeatherWidgetData(response, widget);
+        return this.widgetDataFactory.createWeatherWidgetData(response, widget);
     }
+
+
 }

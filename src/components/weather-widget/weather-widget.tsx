@@ -2,8 +2,8 @@
 import * as styles from "./weather-widget.scss";
 import {IWeatherWidget, IWeatherWidgetData, IWidget} from "../../models";
 import cn from "classnames";
-import {IWeatherService} from "../../services/weather/weather-service-base";
 import {WidgetContextMenu} from "../index";
+import {IWeatherService} from "../../services";
 
 export interface IWeatherWidgetProps {
     widget: IWeatherWidget,

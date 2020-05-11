@@ -2,13 +2,14 @@
 import {IYandexWeatherResponse} from "../../models-remote/yandex-weather-models";
 import moment from "moment";
 import {unitUtils} from "../../utils";
+import {IWeatherWidgetDataFactory} from "./weather-widget-data-factory-base";
 
 function getIconUrl(iconName: string) {
     return `https://yastatic.net/weather/i/icons/blueye/color/svg/${iconName}.svg`
 }
 
-export class YandexWeatherWidgetDataFactory {
-    public static createWeatherWidgetData(yandexResponse: IYandexWeatherResponse, widget: IWeatherWidget): IWeatherWidgetData {
+export class YandexWeatherWidgetDataFactory implements IWeatherWidgetDataFactory<IYandexWeatherResponse> {
+    public createWeatherWidgetData(yandexResponse: IYandexWeatherResponse, widget: IWeatherWidget): IWeatherWidgetData {
         const localtime = moment((yandexResponse.now + yandexResponse.info.tzinfo.offset) * 1000);
         const {fact} = yandexResponse;
 

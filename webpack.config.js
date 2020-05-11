@@ -154,7 +154,7 @@ module.exports = function(env, args) {
                     use: sassLoaders()
                 },
                 {
-                    test: /\.(png|jpg|gif|svg)$/i,
+                    test: /\.(png|jpg|gif|svg|webp)$/i,
                     use: imagesLoaders()
                 },
                 {
