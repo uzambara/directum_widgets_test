@@ -21,8 +21,8 @@ function WidgetContextMenuComponent(props: IWidgetContextMenuProps) {
         open={Boolean(anchorEl)}
         onClose={onClose}
     >
-        <MenuItem onClick={onDeleteClick}>Delete</MenuItem>
-        <MenuItem onClick={onEditClick}>Edit</MenuItem>
+        <MenuItem onClick={() => {onClose(); onDeleteClick();}}>Delete</MenuItem>
+        <MenuItem onClick={() => {onClose(); onEditClick();}}>Edit</MenuItem>
     </Menu>
 }
 

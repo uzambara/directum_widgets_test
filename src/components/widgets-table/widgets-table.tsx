@@ -13,15 +13,16 @@ import {widgetUtils} from "../../utils";
 export interface IWidgetsTableProps {
     columnsCount: number,
     widgets: {[colIndex: number]: IWidget[]},
-    deleteWidget: (widget: IWidget) => void,
-    changeWidgetColumn: (id: string, oldColumnIndex: number, newColumnIndex: number, currentRowindex: number, newRowIndex: number) => void
+    onDeleteWidget: (widget: IWidget) => void,
+    onEditWidget: (widget: IWidget) => void,
+    onWidgetPositionChange: (id: string, oldColumnIndex: number, newColumnIndex: number, currentRowindex: number, newRowIndex: number) => void
 }
 
 const DraggableWeatherWidget = withDraggable<IWeatherWidgetProps>(WeatherWidget, "weatherWidgetHandle");
 const DraggableCurrencyRateWidget = withDraggable<ICurrencyRateWidgetProps>(CurrencyRateWidget, "weatherWidgetHandle");
 
 function WidgetsTableComponent(props: IWidgetsTableProps) {
-    const {columnsCount, widgets, deleteWidget, changeWidgetColumn} = props;
+    const {columnsCount, widgets, onDeleteWidget, onWidgetPositionChange, onEditWidget} = props;
     const weatherService = new YandexWeatherService();
     const columnRefsArray = useRef<{[key: string]: MutableRefObject<HTMLDivElement>}>({});
 
@@ -48,7 +49,7 @@ function WidgetsTableComponent(props: IWidgetsTableProps) {
             currentRowIndex: currentRowIndex
         });
 
-        changeWidgetColumn(id, currentColumnIndex, newColumnIdx, currentRowIndex, newRowIndex);
+        onWidgetPositionChange(id, currentColumnIndex, newColumnIdx, currentRowIndex, newRowIndex);
     };
 
 
@@ -72,7 +73,8 @@ function WidgetsTableComponent(props: IWidgetsTableProps) {
                                     widget={widget as IWeatherWidget}
                                     key={widget.id}
                                     weatherService={weatherService}
-                                    deleteWidget={deleteWidget}
+                                    onDeleteWidget={onDeleteWidget}
+                                    onEditWidget={onEditWidget}
                                 />)
                         }
                 </div>})

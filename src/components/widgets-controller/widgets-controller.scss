@@ -15,16 +15,27 @@
         flex-wrap: wrap;
     }
 
-    .widgets-controller-submit-button {
+    .widgets-controller-button,
+    .widgets-controller-button{
         max-width: 150px;
         margin-right: 30px;
-        height: 50px;
+        min-height: 40px;
+    }
+
+    .buttons-and-alert-wrapper {
+        flex: 1 1 100%;
+        position: relative;
+    }
+
+    .error-alert {
+        position: absolute;
+        top: -45px;
+        left: 0;
     }
 
     .buttons-wrapper {
         justify-content: flex-start;
         align-items: center;
-        flex: 0 1 100%;
         display: flex;
         min-height: 60px;
     }

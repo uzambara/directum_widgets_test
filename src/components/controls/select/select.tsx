@@ -15,7 +15,7 @@ export function Select(props: PropsWithChildren<ISelectProps>) {
     const [_id] = useState(guid());
     const {value, onChange, labelText, className, children} = props;
 
-    return <FormControl className={className}>
+    return <FormControl className={className} size='small'>
         {labelText && <InputLabel id={_id}>{labelText}</InputLabel>}
         <MaterialSelect labelId={_id} value={value == null ? "" : value}
                         onChange={(ev) => onChange(ev)}>

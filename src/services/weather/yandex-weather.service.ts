@@ -5,11 +5,14 @@ import {IYandexWeatherResponse} from "../../models-remote/yandex-weather-models"
 import {IWeatherService} from "./weather-service-base";
 import moment from "moment";
 
-const API_URL = "https://localhost:5001/WeatherForecast";
+
+const API_URL = process.env.NODE_ENV === "development"
+    ? "http://localhost:33889/weather-server/WeatherForecast"
+    : "http://91.146.47.187:33889/weather-server/WeatherForecast";
 
 
 export class YandexWeatherService implements IWeatherService {
-    private static Cache: {[key: string]: IWeatherWidgetData} = {};
+    private static Cache: {[key: string]: IYandexWeatherResponse} = {};
     private static GetCacheKey(widget: IWeatherWidget): string {
         let nowDate = moment().format("DD.MM.YYYY");
         return `${widget.city.id}_${nowDate}`;
@@ -17,9 +20,10 @@ export class YandexWeatherService implements IWeatherService {
 
     public async getWeather(widget: IWeatherWidget): Promise<IWeatherWidgetData> {
         const cacheKey = YandexWeatherService.GetCacheKey(widget);
-        const cachedData = YandexWeatherService.Cache[cacheKey];
-        if(cachedData)
-            return cachedData;
+        const cachedResponse = YandexWeatherService.Cache[cacheKey];
+        if(cachedResponse) {
+            return YandexWeatherWidgetDataFactory.createWeatherWidgetData(cachedResponse, widget);
+        }
 
         const searchParams = {
             lat: widget.city.lat,
@@ -29,9 +33,7 @@ export class YandexWeatherService implements IWeatherService {
             API_URL,
             searchParams);
 
-        let result = YandexWeatherWidgetDataFactory.createWeatherWidgetData(response, widget);
-
-        YandexWeatherService.Cache[cacheKey] = result;
-        return result;
+        YandexWeatherService.Cache[cacheKey] = response;
+        return YandexWeatherWidgetDataFactory.createWeatherWidgetData(response, widget);
     }
 }

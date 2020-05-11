@@ -4,6 +4,14 @@ import {WidgetType} from "../enums";
 import {ValidationResult, Validator} from "lakmus";
 import {CurrencyRateWidgetValidator, WeatherWidgetValidator} from "../validators";
 import {MutableRefObject} from "react";
+import _ from "underscore";
+
+function initWidgetsByColumnMap(columnsCount: number) {
+    let result = {};
+    _.range(columnsCount).map((idx) => result[idx] = []);
+
+    return result;
+}
 
 function createCurrencyRateWidget({
         currency1,
@@ -89,6 +97,78 @@ function getDefaultCurrencyRateWidget(): ICurrencyRateWidget {
     }
 }
 
+function deleteWidget(widget: IWidget, widgetsByColumn: {[columnIdx: number]: IWidget[]}): {[columnIdx: number]: IWidget[]} {
+    const {columnIndex, id} = widget;
+    const filtered = widgetsByColumn[columnIndex].filter(_widget => _widget.id !== id);
+    return {
+        ...widgetsByColumn,
+        [columnIndex]: filtered
+    }
+}
+
+function changeWidget(newWidget: IWidget, oldWidget: IWidget, widgetsByColumn: {[columnIdx: number]: IWidget[]}): {[columnIdx: number]: IWidget[]} {
+    newWidget.initialData = null;
+    if(newWidget.columnIndex === oldWidget.columnIndex) {
+        const newWidgets = widgetsByColumn[oldWidget.columnIndex].map(_widget => _widget.id === oldWidget.id ? newWidget : _widget);
+        return {
+            ...widgetsByColumn,
+            [oldWidget.columnIndex]: newWidgets
+        }
+    }
+
+    const oldColumnWidgets = widgetsByColumn[oldWidget.columnIndex].filter(_widget => _widget.id !== oldWidget.id);
+    const newColumnWidgets = widgetsByColumn[newWidget.columnIndex] || [];
+    newColumnWidgets.push(newWidget);
+    return {
+        ...widgetsByColumn,
+        [oldWidget.columnIndex]: oldColumnWidgets,
+        [newWidget.columnIndex]: newColumnWidgets
+    }
+}
+
+function addWidget(widget: IWidget, widgetsByColumn: {[columnIdx: number]: IWidget[]}) {
+    let widgetsWithSameColumn = widgetsByColumn[widget.columnIndex];
+    if(!widgetsWithSameColumn) {
+        widgetsWithSameColumn = [];
+    }
+    widgetsWithSameColumn.push(widget);
+    return {
+        ...widgetsByColumn,
+        [widget.columnIndex]: widgetsWithSameColumn
+    };
+}
+
+function changeWidgetPlace(
+        id: string,
+        columnIndex: number,
+        newColumnIndex: number,
+        newRowIndex: number,
+        widgetsByColumn: {[columnIdx: number]: IWidget[]}) {
+    const widgetForChanges = widgetsByColumn[columnIndex].find(w => w.id === id) as IWeatherWidget;
+    const currentRowIndex = widgetsByColumn[columnIndex].indexOf(widgetForChanges);
+
+    if(columnIndex == newColumnIndex) {
+        if(currentRowIndex == newRowIndex) {
+            return widgetsByColumn;
+        }
+
+        const filteredArr = widgetsByColumn[newColumnIndex].filter(w => w.id !== id);
+        filteredArr.splice(newRowIndex, 0, widgetForChanges);
+
+        return {
+            ...widgetsByColumn,
+            [newColumnIndex]: filteredArr
+        };
+    }
+    let widgetsCopy = [...widgetsByColumn[newColumnIndex] || []];
+    widgetsCopy.splice(newRowIndex, 0, widgetForChanges);
+    return {
+        ...widgetsByColumn,
+        [columnIndex]: widgetsByColumn[columnIndex].filter(w => w.id !== id),
+        [newColumnIndex]: widgetsCopy
+    };
+}
+
 function validateWidget(widget: IWidget): ValidationResult {
     let validator: Validator<IWeatherWidget | ICurrencyRateWidget> = null;
     let result: ValidationResult = null;
@@ -110,5 +190,10 @@ export const widgetUtils = {
     validateWidget,
     getDefaultCurrencyRateWidget,
     getNewColumnIndexAfterDragStop,
-    getNewRowIndexAfterDragStop
+    getNewRowIndexAfterDragStop,
+    deleteWidget,
+    changeWidgetPlace,
+    addWidget,
+    changeWidget,
+    initWidgetsByColumnMap
 };

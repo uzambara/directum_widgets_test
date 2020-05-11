@@ -8,14 +8,16 @@ import {WidgetContextMenu} from "../index";
 export interface IWeatherWidgetProps {
     widget: IWeatherWidget,
     weatherService: IWeatherService,
-    deleteWidget: (widget: IWidget) => void
+    onDeleteWidget: (widget: IWidget) => void,
+    onEditWidget: (widget: IWidget) => void
 }
 
 function WeatherWidgetComponent(props: IWeatherWidgetProps) {
-    const {widget, weatherService, deleteWidget} = props;
+    const {widget, weatherService, onDeleteWidget, onEditWidget} = props;
     const [widgetData, setWidgetData] = useState<IWeatherWidgetData>(widget.initialData);
     const [contextMenuAnchorEl, setContextMenuAnchorEl] = useState(null);
-    const deleteSelf = () => deleteWidget(widget);
+    const deleteSelf = () => onDeleteWidget(widget);
+    const editSelf = () => onEditWidget(widget);
 
     const openContextMenu = useCallback((ev) => {
         setContextMenuAnchorEl(ev.currentTarget);
@@ -24,7 +26,7 @@ function WeatherWidgetComponent(props: IWeatherWidgetProps) {
         setContextMenuAnchorEl(null);
     }, []);
     useEffect(() => {
-        if(!widgetData) {
+        if(!widget.initialData) {
             weatherService
                 .getWeather(widget)
                 .then(result => {
@@ -40,13 +42,13 @@ function WeatherWidgetComponent(props: IWeatherWidgetProps) {
             onClose={closeContextMenu}
             anchorEl={contextMenuAnchorEl}
             onDeleteClick={deleteSelf}
-            onEditClick={null}
+            onEditClick={editSelf}
         />
-        <span className={styles.contextMenuButton} onClick={openContextMenu}>
-            <span className={styles.contextMenuButtonCircle}/>
-            <span className={styles.contextMenuButtonCircle}/>
-            <span className={styles.contextMenuButtonCircle}/>
-        </span>
+        <ul className={styles.contextMenuButton} onClick={openContextMenu}>
+            <li className={styles.contextMenuButtonCircle}/>
+            <li className={styles.contextMenuButtonCircle}/>
+            <li className={styles.contextMenuButtonCircle}/>
+        </ul>
         {widgetData &&
             <>
                 <h3 className={styles.cityName}>{widgetData.cityName}</h3>

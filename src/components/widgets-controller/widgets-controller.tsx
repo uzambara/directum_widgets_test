@@ -4,9 +4,8 @@ import * as styles from "./widgets-controller.scss";
 import {CurrencyType, TemperatureUnitType, WidgetType} from "../../enums";
 import {useSelectInput} from "../../hooks";
 import {Button, CurrencyRateWidgetSettings, Select, SelectItem, WeatherWidgetSettings} from "..";
-import {ICity, IWidget} from "../../models";
+import {ICity, ICurrencyRateWidget, IWeatherWidget, IWidget} from "../../models";
 import {widgetUtils} from "../../utils";
-import {appSettings} from "../../settings";
 import _ from "underscore";
 import cn from "classnames";
 import {Alert} from "@material-ui/lab";
@@ -15,21 +14,31 @@ import {WeatherWidgetFactory} from "../../factories";
 
 
 export interface IWidgetsControllerProps {
-    onAddWidget: (widget: IWidget) => void,
+    onSubmit: (widget: IWidget) => void,
+    onCancel?: () => void,
     className?: string,
-    cities: ICity[]
+    cities: ICity[],
+    columnsCount: number,
+    initialWidget?: IWidget,
+    submitButtonText?: string
+
 }
 
 function WidgetsControllerComponent(props: IWidgetsControllerProps) {
-    const {onAddWidget, className, cities} = props;
-    const {value: columnIndex, onChange: onColumnIndexChange} = useSelectInput<number>(0);
+    const {onSubmit, className, cities, columnsCount, initialWidget, submitButtonText, onCancel} = props;
+    const {value: columnIndex, onChange: onColumnIndexChange} = useSelectInput<number>(initialWidget?.columnIndex || 0);
     const [validateError, setValidateError] = useState(false);
 
-    const {value: cityId, onChange: onCityChange} = useSelectInput<number>();
-    const {value: currency1, onChange: onCurrency1Change} = useSelectInput<CurrencyType>(CurrencyType.USD);
-    const {value: currency2, onChange: onCurrency2Change} = useSelectInput<CurrencyType>(CurrencyType.USD);
-    const {value: temperatureUnit, onChange: onTemperatureUnitChange} = useSelectInput<TemperatureUnitType>(TemperatureUnitType.Celsius);
-    const {value: widgetType, onChange: onWidgetTypeChange} = useSelectInput<WidgetType>(WidgetType.Weather);
+    const {value: widgetType, onChange: onWidgetTypeChange} = useSelectInput<WidgetType>(initialWidget?.type || WidgetType.Weather);
+
+    const weatherWidget = initialWidget as IWeatherWidget;
+    const {value: cityId, onChange: onCityChange} = useSelectInput<number>(weatherWidget?.city?.id || -1);
+    const {value: temperatureUnit, onChange: onTemperatureUnitChange} = useSelectInput<TemperatureUnitType>(weatherWidget?.temperatureUnit || TemperatureUnitType.Celsius);
+
+    const currencyRateWidget = initialWidget as ICurrencyRateWidget;
+    const {value: currency1, onChange: onCurrency1Change} = useSelectInput<CurrencyType>(currencyRateWidget?.currency1 || CurrencyType.USD);
+    const {value: currency2, onChange: onCurrency2Change} = useSelectInput<CurrencyType>(currencyRateWidget?.currency2 || CurrencyType.USD);
+
 
 
     const addWidget = () => {
@@ -51,13 +60,13 @@ function WidgetsControllerComponent(props: IWidgetsControllerProps) {
             setValidateError(true);
         } else {
             setValidateError(false);
-            onAddWidget(widget);
+            onSubmit(widget);
         }
     };
 
     return <section className={cn(styles.widgetsController, className)}>
         <Select value={columnIndex} onChange={onColumnIndexChange} labelText="Column number" className={styles.widgetsControllerInput}>
-            {_.range(appSettings.COUNT_OF_WIDGET_COLUMNS).map(_columnIdx =>
+            {_.range(columnsCount).map(_columnIdx =>
                 <SelectItem key={_columnIdx} value={_columnIdx}>{_columnIdx + 1}</SelectItem>)}
         </Select>
         <Select
@@ -88,13 +97,15 @@ function WidgetsControllerComponent(props: IWidgetsControllerProps) {
             />
             || null
         }
-        <div className={styles.buttonsWrapper}>
-            <Button onClick={addWidget} className={styles.widgetsControllerSubmitButton} text="Add widget"/>
-            {
-                validateError &&
-                <Alert severity="error">
-                    Need to choose all fields.
-                </Alert>
+        <div className={styles.buttonsAndAlertWrapper}>
+            <div className={styles.buttonsWrapper}>
+                <Button onClick={addWidget} className={styles.widgetsControllerButton} text={submitButtonText ||"Add widget"}/>
+                {onCancel && <Button onClick={onCancel} className={styles.widgetsControllerButton} text={"Cancel"}/>}
+            </div>
+            {validateError &&
+            <Alert severity="error" className={styles.errorAlert}>
+                Need to choose all fields.
+            </Alert>
             }
         </div>
     </section>
