@@ -185,6 +185,5 @@ module.exports = function(env, args) {
             historyApiFallback: true
         }
     };
-    console.log(res.module.rules[3]);
     return res;
 };
