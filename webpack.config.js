@@ -80,7 +80,7 @@ const imagesLoaders = () => {
         {
             loader: "file-loader",
             options: {
-                outputPath: "/images/"
+                outputPath: "images"
             }
         }
     ];
@@ -94,7 +94,7 @@ const fontsLoaders = () => {
             loader: 'file-loader',
             options: {
                 name: '[name].[ext]',
-                outputPath: '/fonts/'
+                outputPath: './fonts/'
             }
         }
     ];
