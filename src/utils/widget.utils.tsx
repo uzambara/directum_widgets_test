@@ -87,10 +87,11 @@ function changeWidget(newWidget: IWidget, oldWidget: IWidget, widgetsByColumn: {
     newWidget.initialData = null;
     if(newWidget.columnIndex === oldWidget.columnIndex) {
         const newWidgets = widgetsByColumn[oldWidget.columnIndex].map(_widget => _widget.id === oldWidget.id ? newWidget : _widget);
-        return {
+        const result = {
             ...widgetsByColumn,
             [oldWidget.columnIndex]: newWidgets
-        }
+        };
+        return result;
     }
 
     const oldColumnWidgets = widgetsByColumn[oldWidget.columnIndex].filter(_widget => _widget.id !== oldWidget.id);
@@ -122,6 +123,7 @@ function changeWidgetPlace(
         newRowIndex: number,
         widgetsByColumn: {[columnIdx: number]: IWidget[]}) {
     const widgetForChanges = widgetsByColumn[columnIndex].find(w => w.id === id) as IWeatherWidget;
+    widgetForChanges.columnIndex = newColumnIndex;
     const currentRowIndex = widgetsByColumn[columnIndex].indexOf(widgetForChanges);
 
     if(columnIndex == newColumnIndex) {

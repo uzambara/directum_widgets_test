@@ -3,7 +3,7 @@ import {WidgetType} from "../../enums";
 import {guid} from "../../utils";
 
 export class CurrencyWidgetFactory {
-    public static createCurrencyRateWidget({
+    public static  createCurrencyRateWidget({
             currencyType1,
             currencyType2,
             columnIndex}: ICurrencyRateWidget): ICurrencyRateWidget {
