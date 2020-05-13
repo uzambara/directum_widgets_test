@@ -1,4 +1,4 @@
-﻿import React, {memo, useCallback, useEffect, useState} from "react";
+﻿import React, {memo, useEffect, useState} from "react";
 import * as styles from "./weather-widget.scss";
 import {IWeatherWidget, IWeatherWidgetData, IWidget} from "../../models";
 import cn from "classnames";
@@ -12,19 +12,19 @@ export interface IWeatherWidgetProps {
     onEditWidget: (widget: IWidget) => void
 }
 
-function WeatherWidgetComponent(props: IWeatherWidgetProps) {
+export function WeatherWidgetComponent(props: IWeatherWidgetProps) {
     const {widget, weatherService, onDeleteWidget, onEditWidget} = props;
     const [widgetData, setWidgetData] = useState<IWeatherWidgetData>(widget.initialData);
-    const [contextMenuAnchorEl, setContextMenuAnchorEl] = useState(null);
+    const [contextMenuAnchorEl, setContextMenuAnchorEl] = useState();
     const deleteSelf = () => onDeleteWidget(widget);
     const editSelf = () => onEditWidget(widget);
 
-    const openContextMenu = useCallback((ev) => {
+    const openContextMenu = (ev) => {
         setContextMenuAnchorEl(ev.currentTarget);
-    }, []);
-    const closeContextMenu = useCallback(() => {
+    };
+    const closeContextMenu = () => {
         setContextMenuAnchorEl(null);
-    }, []);
+    };
     useEffect(() => {
         // У API есть ограничение по вызовам в сутки. Что бы не упереться в потолок это можно юзать при разработке.
         // if(!widget.initialData) {

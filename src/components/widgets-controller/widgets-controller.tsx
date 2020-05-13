@@ -24,7 +24,7 @@ export interface IWidgetsControllerProps {
 
 }
 
-function WidgetsControllerComponent(props: IWidgetsControllerProps) {
+export function WidgetsControllerComponent(props: IWidgetsControllerProps) {
     const {onSubmit, className, cities, columnsCount, initialWidget, submitButtonText, onCancel} = props;
     const {value: columnIndex, onChange: onColumnIndexChange} = useSelectInput<number>(initialWidget?.columnIndex || 0);
     const [validateError, setValidateError] = useState(false);
@@ -97,7 +97,7 @@ function WidgetsControllerComponent(props: IWidgetsControllerProps) {
         }
         <div className={styles.buttonsAndAlertWrapper}>
             <div className={styles.buttonsWrapper}>
-                <Button onClick={addWidget} className={styles.widgetsControllerButton} text={submitButtonText ||"Add widget"}/>
+                <Button onClick={addWidget} className={styles.widgetsControllerButton} text={submitButtonText || "Add widget"}/>
                 {onCancel && <Button onClick={onCancel} className={styles.widgetsControllerButton} text={"Cancel"}/>}
             </div>
             {validateError &&

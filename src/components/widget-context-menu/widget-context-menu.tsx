@@ -1,6 +1,5 @@
-﻿import React, {memo, useState} from "react";
+﻿import React, {memo} from "react";
 import {Menu, MenuItem} from "@material-ui/core";
-import {guid} from "../../utils";
 import * as styles from "./widget-context-menu.scss";
 
 export interface IWidgetContextMenuProps {
@@ -12,10 +11,11 @@ export interface IWidgetContextMenuProps {
 
 function WidgetContextMenuComponent(props: IWidgetContextMenuProps) {
     const {anchorEl, onClose, onDeleteClick, onEditClick} = props;
-    const [id] = useState(guid());
+
+    if(!anchorEl)
+        return null;
     return <Menu
         className={styles.widgetContextMenu}
-        id={id}
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}

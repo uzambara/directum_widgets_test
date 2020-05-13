@@ -53,7 +53,6 @@ function WidgetsTableComponent(props: IWidgetsTableProps) {
         onWidgetPositionChange(id, currentColumnIndex, newColumnIdx, currentRowIndex, newRowIndex);
     };
 
-    console.log(widgets);
     return <section className={styles.widgetsTable}>
         <div className={styles.widgetsTableRow}>
             {

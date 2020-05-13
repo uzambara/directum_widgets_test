@@ -41,6 +41,13 @@ function getNewRowIndexAfterDragStop({
             break;
         }
     }
+    if(isTheSameColumn) {
+        newRowIndex > currentRowIndex && newRowIndex--;
+        newRowIndex = newRowIndex > current.children.length - 1
+            ? current.children.length - 1
+            : newRowIndex;
+    }
+
     return newRowIndex;
 }
 
