@@ -10,7 +10,7 @@ function getIconUrl(iconName: string) {
 
 export class YandexWeatherWidgetDataFactory implements IWeatherWidgetDataFactory<IYandexWeatherResponse> {
     public createWeatherWidgetData(yandexResponse: IYandexWeatherResponse, widget: IWeatherWidget): IWeatherWidgetData {
-        const localtime = moment((yandexResponse.now + yandexResponse.info.tzinfo.offset) * 1000);
+        const localtime = moment.utc((yandexResponse.now + yandexResponse.info.tzinfo.offset) * 1000);
         const {fact} = yandexResponse;
 
         const currentTemperature = unitUtils.getTemperatureByUnitType(fact.temp, widget.temperatureUnit);

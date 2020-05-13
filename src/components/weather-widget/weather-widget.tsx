@@ -26,15 +26,23 @@ function WeatherWidgetComponent(props: IWeatherWidgetProps) {
         setContextMenuAnchorEl(null);
     }, []);
     useEffect(() => {
-        if(!widget.initialData) {
-            weatherService
-                .getWeather(widget)
-                .then(result => {
-                    widget.initialData = result;
-                    setWidgetData(result);
+        // У API есть ограничение по вызовам в сутки. Что бы не упереться в потолок это можно юзать при разработке.
+        // if(!widget.initialData) {
+        //     weatherService
+        //         .getWeather(widget)
+        //         .then(result => {
+        //             widget.initialData = result;
+        //             setWidgetData(result);
+        //         });
+        // }
+        weatherService
+            .getWeather(widget)
+            .then(result => {
+                widget.initialData = result;
+                setWidgetData(result);
 
-                });
-        }
+            });
+
     }, []);
 
     return <article className={cn(styles.weatherWidget)} id="handle">
